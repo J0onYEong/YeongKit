@@ -27,6 +27,10 @@ public class RBTreeNode<Value> where Value: Comparable {
     var leftChild: Node
     var rightChild: Node
     
+    var isEmptyNode: Bool {
+        value == nil
+    }
+    
     init(value: Value?, color: NodeColor, parent: Node? = nil) {
         self.value = value
         self.color = color
@@ -72,5 +76,16 @@ private extension RBTreeNode {
     /// A basic leaf node with no value and a default black color.
     static var emptyLeafNode: Node {
         .init(value: nil, color: .black)
+    }
+}
+
+extension RBTreeNode: Comparable {
+    
+    public static func == (lhs: RBTreeNode<Value>, rhs: RBTreeNode<Value>) -> Bool {
+        lhs.value! == rhs.value!
+    }
+    
+    public static func < (lhs: RBTreeNode<Value>, rhs: RBTreeNode<Value>) -> Bool {
+        lhs.value! < rhs.value!
     }
 }
