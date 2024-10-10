@@ -32,5 +32,21 @@ class SwiftStructuresTests: XCTestCase {
         
         XCTAssertEqual(rbTree.height, expactedTreeHeight)
     }
-
+    
+    func testDuplicateElement() {
+        
+        let rbTree = RBTree<Int>()
+        let testElements = [1, 2 ,3, 4, 5, 5]
+        var currentElement = 0
+        
+        do {
+            for element in testElements {
+                currentElement = element
+                try rbTree.append(element)
+            }
+            XCTFail()
+        } catch {
+            XCTAssertEqual(currentElement, 5)
+        }
+    }
 }
