@@ -132,6 +132,11 @@ public class RBTree<Element> where Element: Comparable {
         }
     }
     
+    
+    /// recoloring
+    /// 1. make parent and uncle to black
+    /// 2. make grandNode to red
+    /// 3. if grandNode is root, make it black
     private func recoloring(newNode: Node, parentNode: Node, grandNode: Node, uncleNode: Node) {
         
         // make parent and uncle to black
