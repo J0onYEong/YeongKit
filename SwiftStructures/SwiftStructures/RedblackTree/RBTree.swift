@@ -25,7 +25,7 @@ public class RBTree<Element> where Element: Comparable {
     
     
     /// Append element to tree
-    public func append(_ value: Element) {
+    public func append(_ value: Element) throws {
         
         guard let rootNode else {
             // Root node is empty
@@ -52,9 +52,8 @@ public class RBTree<Element> where Element: Comparable {
                 // go right
                 currentParentNode = currentParentNode.rightChild
             } else {
-                fatalError("BST node's values should be unique")
+                throw RBTreeError.duplicatedElement
             }
-            
         }
         
         // check double red
