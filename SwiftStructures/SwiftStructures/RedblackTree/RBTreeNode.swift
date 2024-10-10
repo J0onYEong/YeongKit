@@ -16,17 +16,37 @@ public class RBTreeNode<Value> where Value: Comparable {
     
     // Node information
     public let value: Value?
-    public private(set) var color: NodeColor
+    var color: NodeColor
     
-    // Children
+    // Parent node
+    var parent: RBTreeNode<Value>? = nil
+    
+    // Children nodes
     var leftChild: RBTreeNode<Value>
     var rightChild: RBTreeNode<Value>
     
-    init(value: Value?, color: NodeColor) {
+    init(value: Value?, color: NodeColor, parent: RBTreeNode<Value>? = nil) {
         self.value = value
         self.color = color
+        self.parent = parent
         self.leftChild = .emptyLeafNode
         self.rightChild = .emptyLeafNode
+        
+        // set parent
+        leftChild.parent = self
+        rightChild.parent = self
+    }
+    
+    func setToChild(_ node: RBTreeNode<Value>) {
+        node.parent = self
+        
+        if node.value! > self.value! {
+            self.rightChild = node
+        } else if node.value! < self.value! {
+            self.leftChild = node
+        } else {
+            fatalError("BST node's values should be unique")
+        }
     }
 }
 
