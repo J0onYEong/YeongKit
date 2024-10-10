@@ -99,13 +99,36 @@ public class RBTree<Element> where Element: Comparable {
         }
     }
     
+    /// restructuring
+    /// 1. sort newNode, parentNode, grandNode
+    /// 2. make middle node to parent and the others its children.
+    /// 3. make middle node to black and the others to red
     private func restructuring(newNode: Node, parentNode: Node, grandNode: Node, uncleNode: Node) {
+        
+        // great grand node
+        let greatGrandNode: Node? = grandNode === rootNode ? nil : grandNode.parent
+        
+        // break all relationship
+        if let greatGrandNode {
+            greatGrandNode.removeChild(grandNode)
+        }
+        grandNode.removeChild(parentNode)
+        parentNode.removeChild(newNode)
         
         var sortedList = [newNode, parentNode, grandNode].sorted()
         let middleNode = sortedList.remove(at: 1)
+        middleNode.color = .black
         sortedList.forEach {
             $0.color = .red
             middleNode.setToChild($0)
+        }
+        
+        if let greatGrandNode {
+            greatGrandNode.setToChild(middleNode)
+        } else {
+            // middle node becomes root
+            middleNode.parent = nil
+            rootNode = middleNode
         }
     }
     

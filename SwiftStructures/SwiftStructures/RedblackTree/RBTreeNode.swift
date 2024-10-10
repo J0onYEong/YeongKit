@@ -69,6 +69,20 @@ public class RBTreeNode<Value> where Value: Comparable {
             fatalError("\(#function) this isn't child of current node")
         }
     }
+    
+    func removeChild(_ node: Node) {
+        if leftChild === node {
+            leftChild = .emptyLeafNode
+            node.parent = nil
+            
+        } else if rightChild === node {
+            rightChild = .emptyLeafNode
+            node.parent = nil
+            
+        } else {
+            fatalError("\(#function) this isn't child of current node")
+        }
+    }
 }
 
 private extension RBTreeNode {
