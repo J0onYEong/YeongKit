@@ -24,8 +24,8 @@ public class RBTreeNode<Value> where Value: Comparable {
     var parent: Node? = nil
     
     // Children nodes
-    var leftChild: Node
-    var rightChild: Node
+    var leftChild: Node? = nil
+    var rightChild: Node? = nil
     
     var isEmptyNode: Bool {
         value == nil
@@ -35,21 +35,19 @@ public class RBTreeNode<Value> where Value: Comparable {
         self.value = value
         self.color = color
         self.parent = parent
-        self.leftChild = .emptyLeafNode
-        self.rightChild = .emptyLeafNode
-        
-        // set parent
-        leftChild.parent = self
-        rightChild.parent = self
+        if value != nil {
+            self.leftChild = makeEmptyLeafNode()
+            self.rightChild = makeEmptyLeafNode()
+        }
     }
     
     /// Set a node to child
     func setToChild(_ node: Node) {
         node.parent = self
         
-        if node.value! > self.value! {
+        if node > self {
             self.rightChild = node
-        } else if node.value! < self.value! {
+        } else if node < self {
             self.leftChild = node
         } else {
             fatalError("BST node's values should be unique")
@@ -60,10 +58,10 @@ public class RBTreeNode<Value> where Value: Comparable {
     func getSibilingNode(_ node: Node) -> Node {
         
         if leftChild === node {
-            return rightChild
+            return rightChild!
             
         } else if rightChild === node {
-            return leftChild
+            return leftChild!
             
         } else {
             fatalError("\(#function) this isn't child of current node")
@@ -72,11 +70,11 @@ public class RBTreeNode<Value> where Value: Comparable {
     
     func removeChild(_ node: Node) {
         if leftChild === node {
-            leftChild = .emptyLeafNode
+            leftChild = makeEmptyLeafNode()
             node.parent = nil
             
         } else if rightChild === node {
-            rightChild = .emptyLeafNode
+            rightChild = makeEmptyLeafNode()
             node.parent = nil
             
         } else {
@@ -88,8 +86,10 @@ public class RBTreeNode<Value> where Value: Comparable {
 private extension RBTreeNode {
     
     /// A basic leaf node with no value and a default black color.
-    static var emptyLeafNode: Node {
-        .init(value: nil, color: .black)
+    func makeEmptyLeafNode() -> Node {
+        let leafNode: Node = .init(value: nil, color: .black)
+        leafNode.parent = self
+        return leafNode
     }
 }
 

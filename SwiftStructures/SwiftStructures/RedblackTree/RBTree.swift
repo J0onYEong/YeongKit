@@ -25,6 +25,34 @@ public class RBTree<Element> where Element: Comparable {
         self.rootNode = .init(value: value, color: .black)
     }
     
+    var height: Int {
+        
+        guard let rootNode else { return 0 }
+        
+        var currentNodes = [rootNode]
+        var currentHeight = 0
+        
+        while !currentNodes.isEmpty {
+            
+            currentHeight += 1
+            
+            var newLayer: [Node] = []
+            
+            currentNodes.forEach { node in
+                if !node.leftChild!.isEmptyNode {
+                    newLayer.append(node.leftChild!)
+                }
+                if !node.rightChild!.isEmptyNode {
+                    newLayer.append(node.rightChild!)
+                }
+            }
+            
+            currentNodes = newLayer
+        }
+        
+        return currentHeight
+    }
+    
     
     /// Append element to tree
     public func append(_ value: Element) throws {
@@ -66,8 +94,6 @@ public class RBTree<Element> where Element: Comparable {
         
         // check double red
         let parentNode = newNode.parent!
-        let leftChild = newNode.leftChild
-        let rightChild = newNode.rightChild
         
         if parentNode.color == .red {
             // double red condition
@@ -153,6 +179,46 @@ public class RBTree<Element> where Element: Comparable {
             
             // check whether grand node makes double red again
             resolveDoubleRed(grandNode)
+        }
+    }
+}
+
+// MARK: for test
+extension RBTree where Element == Int {
+    
+    
+    func printTree() {
+        
+        var printLayer: [Int: [RBTreeNode<Int>]] = [0: [rootNode!]]
+        
+        var currentLayerIndex = 0
+        
+        while(!printLayer[currentLayerIndex]!.isEmpty) {
+            
+            printLayer[currentLayerIndex+1] = []
+            
+            printLayer[currentLayerIndex]!.forEach { node in
+                if !node.leftChild!.isEmptyNode {
+                    printLayer[currentLayerIndex+1]!.append(node.leftChild!)
+                }
+                
+                if !node.rightChild!.isEmptyNode {
+                    printLayer[currentLayerIndex+1]!.append(node.rightChild!)
+                }
+            }
+            
+            currentLayerIndex += 1
+        }
+    
+        
+        for key in 0..<currentLayerIndex {
+            
+            for node in printLayer[key]! {
+                
+                let colorMark = node.color == .red ? "🟥" : "⬛️"
+                print("\(colorMark)p:\(node.parent?.value ?? -1)v:\(node.value!)", terminator: " ")
+            }
+            print("\n", terminator: "")
         }
     }
 }
