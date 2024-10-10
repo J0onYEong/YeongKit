@@ -57,5 +57,25 @@ public class RBTree<Element> where Element: Comparable {
         }
         
         // check double red
+        let parent = newNode.parent!
+        let leftChild = newNode.leftChild
+        let rightChild = newNode.rightChild
+        
+        if parent.color == .red && (leftChild.color == .red || rightChild.color == .red) {
+            // double red condition
+            
+            // parent isn't root so it must has parent
+            let grand = parent.parent!
+            let uncle = grand.getSibilingNode(parent)
+            
+            if uncle.color == .red {
+                
+                // start recoloring
+                
+            } else {
+                
+                // start reconstructing
+            }
+        }
     }
 }

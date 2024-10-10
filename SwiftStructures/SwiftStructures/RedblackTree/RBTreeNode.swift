@@ -9,6 +9,8 @@ import Foundation
 
 public class RBTreeNode<Value> where Value: Comparable {
     
+    typealias Node = RBTreeNode<Value>
+    
     public enum NodeColor {
         case red
         case black
@@ -19,13 +21,13 @@ public class RBTreeNode<Value> where Value: Comparable {
     var color: NodeColor
     
     // Parent node
-    var parent: RBTreeNode<Value>? = nil
+    var parent: Node? = nil
     
     // Children nodes
-    var leftChild: RBTreeNode<Value>
-    var rightChild: RBTreeNode<Value>
+    var leftChild: Node
+    var rightChild: Node
     
-    init(value: Value?, color: NodeColor, parent: RBTreeNode<Value>? = nil) {
+    init(value: Value?, color: NodeColor, parent: Node? = nil) {
         self.value = value
         self.color = color
         self.parent = parent
@@ -37,7 +39,8 @@ public class RBTreeNode<Value> where Value: Comparable {
         rightChild.parent = self
     }
     
-    func setToChild(_ node: RBTreeNode<Value>) {
+    /// Set a node to child
+    func setToChild(_ node: Node) {
         node.parent = self
         
         if node.value! > self.value! {
@@ -48,12 +51,26 @@ public class RBTreeNode<Value> where Value: Comparable {
             fatalError("BST node's values should be unique")
         }
     }
+    
+    /// Find sibiling node
+    func getSibilingNode(_ node: Node) -> Node {
+        
+        if leftChild === node {
+            return rightChild
+            
+        } else if rightChild === node {
+            return leftChild
+            
+        } else {
+            fatalError("\(#function) this isn't child of current node")
+        }
+    }
 }
 
 private extension RBTreeNode {
     
     /// A basic leaf node with no value and a default black color.
-    static var emptyLeafNode: RBTreeNode<Value> {
+    static var emptyLeafNode: Node {
         .init(value: nil, color: .black)
     }
 }
