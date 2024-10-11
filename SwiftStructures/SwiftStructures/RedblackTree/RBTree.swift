@@ -7,6 +7,9 @@
 
 import Foundation
 
+/// A Red-Black Tree implementation.
+/// - Note: This type is **not thread-safe** for append and remove operations.
+/// - All values in the tree must be unique. Attempting to insert a duplicate value will result in an error.
 public class RBTree<Element> where Element: Comparable {
     
     typealias Node = RBTreeNode<Element>
@@ -51,6 +54,14 @@ public class RBTree<Element> where Element: Comparable {
         }
         
         return currentHeight
+    }
+    
+    
+    /// Append elements to tree
+    public func append(_ values: [Element]) throws {
+        for value in values {
+            try append(value)
+        }
     }
     
     
