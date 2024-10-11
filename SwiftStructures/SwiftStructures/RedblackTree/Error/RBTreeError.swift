@@ -9,4 +9,5 @@ import Foundation
 
 public enum RBTreeError: String, Error {
     case duplicatedElement="BST node's values should be unique"
+    case cantFindElementInTree="Element not found in tree"
 }
