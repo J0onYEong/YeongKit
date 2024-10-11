@@ -19,6 +19,10 @@ public class RBTreeNode<Value> where Value: Comparable {
     // Node information
     public let value: Value?
     var color: NodeColor
+    var isEmptyNode: Bool { value == nil }
+    
+    /// layer is starting from 1
+    public private(set) var layer: Int = 1
     
     // Parent node
     var parent: Node? = nil
@@ -27,9 +31,6 @@ public class RBTreeNode<Value> where Value: Comparable {
     var leftChild: Node? = nil
     var rightChild: Node? = nil
     
-    var isEmptyNode: Bool {
-        value == nil
-    }
     
     init(value: Value?, color: NodeColor, parent: Node? = nil) {
         self.value = value
@@ -43,7 +44,12 @@ public class RBTreeNode<Value> where Value: Comparable {
     
     /// Set a node to child
     func setToChild(_ node: Node) {
+        
+        // set node's parent as self
         node.parent = self
+        
+        // set height of child node by parent
+        node.layer = self.layer + 1
         
         if node > self {
             self.rightChild = node
@@ -89,6 +95,7 @@ private extension RBTreeNode {
     func makeEmptyLeafNode() -> Node {
         let leafNode: Node = .init(value: nil, color: .black)
         leafNode.parent = self
+        leafNode.layer = self.layer+1
         return leafNode
     }
 }
