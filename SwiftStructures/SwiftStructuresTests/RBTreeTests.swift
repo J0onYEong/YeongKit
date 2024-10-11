@@ -8,7 +8,7 @@
 import XCTest
 @testable import SwiftStructures
 
-class SwiftStructuresTests: XCTestCase {
+class RBTreeTests: XCTestCase {
 
     func testRBTreeMakeBalanceBST20() throws {
         
