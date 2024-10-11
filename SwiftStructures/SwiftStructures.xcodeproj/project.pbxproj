@@ -14,7 +14,8 @@
 		9D667BC32CB7E2FF002908C3 /* RBTreeNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D667BC22CB7E2FF002908C3 /* RBTreeNode.swift */; };
 		9D667BC62CB7EA15002908C3 /* RBTreeError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D667BC52CB7EA15002908C3 /* RBTreeError.swift */; };
 		9D667BCA2CB95D33002908C3 /* LockedDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D667BC92CB95D33002908C3 /* LockedDictionary.swift */; };
-		9D667BCC2CB96062002908C3 /* ThreadSafeDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D667BCB2CB96062002908C3 /* ThreadSafeDictionary.swift */; };
+		9D667BCC2CB96062002908C3 /* ThreadSafeDictionaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D667BCB2CB96062002908C3 /* ThreadSafeDictionaryTests.swift */; };
+		9D667BCE2CB961C7002908C3 /* IsolatedDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D667BCD2CB961C7002908C3 /* IsolatedDictionary.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,7 +37,8 @@
 		9D667BC22CB7E2FF002908C3 /* RBTreeNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RBTreeNode.swift; sourceTree = "<group>"; };
 		9D667BC52CB7EA15002908C3 /* RBTreeError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RBTreeError.swift; sourceTree = "<group>"; };
 		9D667BC92CB95D33002908C3 /* LockedDictionary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockedDictionary.swift; sourceTree = "<group>"; };
-		9D667BCB2CB96062002908C3 /* ThreadSafeDictionary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreadSafeDictionary.swift; sourceTree = "<group>"; };
+		9D667BCB2CB96062002908C3 /* ThreadSafeDictionaryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreadSafeDictionaryTests.swift; sourceTree = "<group>"; };
+		9D667BCD2CB961C7002908C3 /* IsolatedDictionary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IsolatedDictionary.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,7 +92,7 @@
 			isa = PBXGroup;
 			children = (
 				9D667BB42CB7DD35002908C3 /* RBTreeTests.swift */,
-				9D667BCB2CB96062002908C3 /* ThreadSafeDictionary.swift */,
+				9D667BCB2CB96062002908C3 /* ThreadSafeDictionaryTests.swift */,
 			);
 			path = SwiftStructuresTests;
 			sourceTree = "<group>";
@@ -117,6 +119,7 @@
 			isa = PBXGroup;
 			children = (
 				9D667BC92CB95D33002908C3 /* LockedDictionary.swift */,
+				9D667BCD2CB961C7002908C3 /* IsolatedDictionary.swift */,
 			);
 			path = ThreadSafeDictionary;
 			sourceTree = "<group>";
@@ -235,6 +238,7 @@
 				9D667BC12CB7E2BD002908C3 /* RBTree.swift in Sources */,
 				9D667BCA2CB95D33002908C3 /* LockedDictionary.swift in Sources */,
 				9D667BC32CB7E2FF002908C3 /* RBTreeNode.swift in Sources */,
+				9D667BCE2CB961C7002908C3 /* IsolatedDictionary.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -242,7 +246,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9D667BCC2CB96062002908C3 /* ThreadSafeDictionary.swift in Sources */,
+				9D667BCC2CB96062002908C3 /* ThreadSafeDictionaryTests.swift in Sources */,
 				9D667BB52CB7DD35002908C3 /* RBTreeTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

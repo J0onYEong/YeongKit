@@ -33,5 +33,13 @@ public class LockedDictionary<Key, Value> where Key: Hashable {
             source[key] = newValue
         }
     }
+    
+    public func remove(key: Key) {
+        defer {
+            lock.unlock()
+        }
+        lock.lock()
+        source.removeValue(forKey: key)
+    }
 }
 

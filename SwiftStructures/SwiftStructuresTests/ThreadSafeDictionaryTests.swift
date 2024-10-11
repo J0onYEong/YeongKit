@@ -10,7 +10,7 @@ import XCTest
 
 final class ThreadSafeDictionary: XCTestCase {
 
-    func testThreadSaftyForLockedDictionary() throws {
+    func testThreadSaftyForLockedDictionary() {
         let dictionary = LockedDictionary<Int, String>()
         let expectation = XCTestExpectation(description: "Multiple threads access LockedDictionary safely")
         expectation.expectedFulfillmentCount = 10 // 10개의 스레드가 완료되기를 기다림
@@ -22,6 +22,8 @@ final class ThreadSafeDictionary: XCTestCase {
                 
                 let value = dictionary[index] // 읽기 작업
                 XCTAssertEqual(value, testValue, "Value mismatch in thread \(index)")
+                
+                dictionary.remove(key: index) // 삭제 작업
                 
                 expectation.fulfill() // 스레드 작업 완료
             }
