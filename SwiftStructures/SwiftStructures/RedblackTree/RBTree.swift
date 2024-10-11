@@ -23,11 +23,6 @@ public class RBTree<Element> where Element: Comparable {
         }
     }
     
-    private func createRoot(_ value: Element) {
-        // Root node is always black
-        self.rootNode = .init(value: value, color: .black)
-    }
-    
     /// height is starting from 1
     var height: Int {
         
@@ -57,6 +52,10 @@ public class RBTree<Element> where Element: Comparable {
         return currentHeight
     }
     
+    private func createRoot(_ value: Element) {
+        // Root node is always black
+        self.rootNode = .init(value: value, color: .black)
+    }
     
     /// Append elements to tree
     public func append(_ values: [Element]) throws {
@@ -152,10 +151,13 @@ public class RBTree<Element> where Element: Comparable {
         }
         grandNode.removeChild(parentNode)
         parentNode.removeChild(newNode)
-        
+    
         var sortedList = [newNode, parentNode, grandNode].sorted()
         let middleNode = sortedList.remove(at: 1)
+        
+        // set middle node to black
         middleNode.color = .black
+        
         sortedList.forEach {
             $0.color = .red
             middleNode.setToChild($0)

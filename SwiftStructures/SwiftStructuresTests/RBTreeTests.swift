@@ -30,9 +30,10 @@ class RBTreeTests: XCTestCase {
                 } catch {
                     XCTFail(error.localizedDescription)
                 }
-                
-                rbTree.printTree()
             }
+            
+            rbTree.printTree()
+            
             XCTAssertTrue((expactedTreeHeightRange).contains(rbTree.height))
             print("------------")
         }
