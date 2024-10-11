@@ -8,12 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		9D667BB02CB7DD35002908C3 /* SwiftStructures.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D667BA72CB7DD35002908C3 /* SwiftStructures.framework */; };
-		9D667BB52CB7DD35002908C3 /* SwiftStructuresTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D667BB42CB7DD35002908C3 /* SwiftStructuresTests.swift */; };
+		9D667BB52CB7DD35002908C3 /* RBTreeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D667BB42CB7DD35002908C3 /* RBTreeTests.swift */; };
 		9D667BB62CB7DD35002908C3 /* SwiftStructures.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D667BAA2CB7DD35002908C3 /* SwiftStructures.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9D667BC12CB7E2BD002908C3 /* RBTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D667BC02CB7E2BD002908C3 /* RBTree.swift */; };
 		9D667BC32CB7E2FF002908C3 /* RBTreeNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D667BC22CB7E2FF002908C3 /* RBTreeNode.swift */; };
 		9D667BC62CB7EA15002908C3 /* RBTreeError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D667BC52CB7EA15002908C3 /* RBTreeError.swift */; };
 		9D667BCA2CB95D33002908C3 /* LockedDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D667BC92CB95D33002908C3 /* LockedDictionary.swift */; };
+		9D667BCC2CB96062002908C3 /* ThreadSafeDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D667BCB2CB96062002908C3 /* ThreadSafeDictionary.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -30,11 +31,12 @@
 		9D667BA72CB7DD35002908C3 /* SwiftStructures.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftStructures.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9D667BAA2CB7DD35002908C3 /* SwiftStructures.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwiftStructures.h; sourceTree = "<group>"; };
 		9D667BAF2CB7DD35002908C3 /* SwiftStructuresTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftStructuresTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		9D667BB42CB7DD35002908C3 /* SwiftStructuresTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftStructuresTests.swift; sourceTree = "<group>"; };
+		9D667BB42CB7DD35002908C3 /* RBTreeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RBTreeTests.swift; sourceTree = "<group>"; };
 		9D667BC02CB7E2BD002908C3 /* RBTree.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RBTree.swift; sourceTree = "<group>"; };
 		9D667BC22CB7E2FF002908C3 /* RBTreeNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RBTreeNode.swift; sourceTree = "<group>"; };
 		9D667BC52CB7EA15002908C3 /* RBTreeError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RBTreeError.swift; sourceTree = "<group>"; };
 		9D667BC92CB95D33002908C3 /* LockedDictionary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockedDictionary.swift; sourceTree = "<group>"; };
+		9D667BCB2CB96062002908C3 /* ThreadSafeDictionary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreadSafeDictionary.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,7 +89,8 @@
 		9D667BB32CB7DD35002908C3 /* SwiftStructuresTests */ = {
 			isa = PBXGroup;
 			children = (
-				9D667BB42CB7DD35002908C3 /* SwiftStructuresTests.swift */,
+				9D667BB42CB7DD35002908C3 /* RBTreeTests.swift */,
+				9D667BCB2CB96062002908C3 /* ThreadSafeDictionary.swift */,
 			);
 			path = SwiftStructuresTests;
 			sourceTree = "<group>";
@@ -239,7 +242,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9D667BB52CB7DD35002908C3 /* SwiftStructuresTests.swift in Sources */,
+				9D667BCC2CB96062002908C3 /* ThreadSafeDictionary.swift in Sources */,
+				9D667BB52CB7DD35002908C3 /* RBTreeTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
