@@ -13,6 +13,7 @@
 		9D667BC12CB7E2BD002908C3 /* RBTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D667BC02CB7E2BD002908C3 /* RBTree.swift */; };
 		9D667BC32CB7E2FF002908C3 /* RBTreeNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D667BC22CB7E2FF002908C3 /* RBTreeNode.swift */; };
 		9D667BC62CB7EA15002908C3 /* RBTreeError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D667BC52CB7EA15002908C3 /* RBTreeError.swift */; };
+		9D667BCA2CB95D33002908C3 /* LockedDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D667BC92CB95D33002908C3 /* LockedDictionary.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -33,6 +34,7 @@
 		9D667BC02CB7E2BD002908C3 /* RBTree.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RBTree.swift; sourceTree = "<group>"; };
 		9D667BC22CB7E2FF002908C3 /* RBTreeNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RBTreeNode.swift; sourceTree = "<group>"; };
 		9D667BC52CB7EA15002908C3 /* RBTreeError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RBTreeError.swift; sourceTree = "<group>"; };
+		9D667BC92CB95D33002908C3 /* LockedDictionary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockedDictionary.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,6 +77,7 @@
 		9D667BA92CB7DD35002908C3 /* SwiftStructures */ = {
 			isa = PBXGroup;
 			children = (
+				9D667BC82CB95CDF002908C3 /* ThreadSafeDictionary */,
 				9D667BBF2CB7DD87002908C3 /* RedblackTree */,
 				9D667BAA2CB7DD35002908C3 /* SwiftStructures.h */,
 			);
@@ -105,6 +108,14 @@
 				9D667BC52CB7EA15002908C3 /* RBTreeError.swift */,
 			);
 			path = Error;
+			sourceTree = "<group>";
+		};
+		9D667BC82CB95CDF002908C3 /* ThreadSafeDictionary */ = {
+			isa = PBXGroup;
+			children = (
+				9D667BC92CB95D33002908C3 /* LockedDictionary.swift */,
+			);
+			path = ThreadSafeDictionary;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -219,6 +230,7 @@
 			files = (
 				9D667BC62CB7EA15002908C3 /* RBTreeError.swift in Sources */,
 				9D667BC12CB7E2BD002908C3 /* RBTree.swift in Sources */,
+				9D667BCA2CB95D33002908C3 /* LockedDictionary.swift in Sources */,
 				9D667BC32CB7E2FF002908C3 /* RBTreeNode.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
