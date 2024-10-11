@@ -10,27 +10,75 @@ import XCTest
 
 class SwiftStructuresTests: XCTestCase {
 
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-    }
-
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-    }
-
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // Any test you write for XCTest can be annotated as throws and async.
-        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
-    }
-
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
+    func testRBTreeMakeBalanceBST20() throws {
+        
+        let testCases = [
+            [71, 3, 31, 10, 24, 54, 32, 22, 96, 68, 62, 11, 97, 67, 61, 52, 43, 49, 59, 80],
+            [40, 70, 45, 53, 2, 50, 83, 7, 47, 42, 4, 65, 46, 38, 95, 18, 79, 6, 1, 27],
+            [44, 30, 82, 76, 87, 15, 41, 26, 51, 64, 20, 39, 19, 90, 16, 94, 72, 99, 84, 78],
+        ]
+        
+        for testCase in testCases {
+            let expactedTreeHeightRange = 5...6
+            
+            let rbTree = RBTree<Int>()
+            
+            testCase.forEach { element in
+                
+                do {
+                    try rbTree.append(element)
+                } catch {
+                    XCTFail(error.localizedDescription)
+                }
+                
+                rbTree.printTree()
+            }
+            XCTAssertTrue((expactedTreeHeightRange).contains(rbTree.height))
+            print("------------")
         }
     }
-
+    
+    func testRBTreeMakeBalanceBST40() throws {
+        
+        let testCases = [
+            [48, 18, 47, 62, 66, 15, 28, 33, 94, 49, 3, 76, 37, 38, 40, 68, 78, 11, 92, 36,
+            69, 4, 95, 53, 23, 12, 81, 88, 44, 32, 46, 91, 14, 74, 80, 86, 22, 25, 39, 1]
+        ]
+    
+        for testCase in testCases {
+            let expactedTreeHeightRange = 6...7
+            
+            let rbTree = RBTree<Int>()
+            
+            testCase.forEach { element in
+                
+                do {
+                    try rbTree.append(element)
+                } catch {
+                    XCTFail(error.localizedDescription)
+                }
+                
+                rbTree.printTree()
+            }
+            XCTAssertTrue((expactedTreeHeightRange).contains(rbTree.height))
+            print("------------")
+        }
+    }
+    
+    func testDuplicateElement() {
+        
+        let rbTree = RBTree<Int>()
+        let testElements = [1, 2 ,3, 4, 5, 5]
+        var currentElement = 0
+        
+        do {
+            for element in testElements {
+                currentElement = element
+                try rbTree.append(element)
+            }
+            XCTFail()
+        } catch {
+            XCTAssertEqual(currentElement, 5)
+        }
+    }
 }
