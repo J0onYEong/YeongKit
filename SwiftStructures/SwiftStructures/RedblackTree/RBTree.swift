@@ -28,6 +28,7 @@ public class RBTree<Element> where Element: Comparable {
         self.rootNode = .init(value: value, color: .black)
     }
     
+    /// height is starting from 1
     var height: Int {
         
         guard let rootNode else { return 0 }

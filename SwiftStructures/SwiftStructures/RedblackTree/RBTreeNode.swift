@@ -103,3 +103,31 @@ extension RBTreeNode: Comparable {
         lhs.value! < rhs.value!
     }
 }
+
+// MARK: Children state
+extension RBTreeNode {
+    
+    enum NodeChildrenState {
+        case noChildren
+        case twins
+        case leftOnly
+        case rightOnly
+    }
+    
+    /// returns children state of node
+    var childrenState: NodeChildrenState? {
+        guard let leftChild, let rightChild else {
+            // this node is empty leaf node
+            return nil
+        }
+        if !leftChild.isEmptyNode && !rightChild.isEmptyNode {
+            return .twins
+        } else if !leftChild.isEmptyNode {
+            return .leftOnly
+        } else if !rightChild.isEmptyNode {
+            return .rightOnly
+        } else {
+            return .noChildren
+        }
+    }
+}
