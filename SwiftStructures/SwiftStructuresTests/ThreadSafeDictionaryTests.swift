@@ -24,6 +24,7 @@ final class ThreadSafeDictionary: XCTestCase {
                 XCTAssertEqual(value, testValue, "Value mismatch in thread \(index)")
                 
                 dictionary.remove(key: index) // 삭제 작업
+                XCTAssertNil(dictionary[index]) // 삭제후 값이 없어야함
                 
                 expectation.fulfill() // 스레드 작업 완료
             }
