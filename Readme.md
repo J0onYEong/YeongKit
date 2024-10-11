@@ -4,9 +4,11 @@
 
 # Milestone
 
-- [x] Red-black tree 
-- [ ] Thread-safe dictionary 
-
+- [x] Red-black tree
+- [ ] Thread-safe dictionary
+    - [x] NSLock
+    - [ ] Actor
+- [ ] HashMap(powerd by RBTree)
 
 
 ## Red-black tree
@@ -86,6 +88,29 @@ let tree = RBTree<Int>()
 
 try tree.append(10)
 try tree.append([5, 20, 15, 25])
+```
+
+## Thread-safe dictionary
+
+### LockedDictionary
+
+LockedDictionary is a custom thread-safe wrapper around Swift’s native Dictionary. It ensures safe, concurrent access to its elements by using a lock (NSLock). This class is particularly useful in multithreaded environments where concurrent reads and writes to a dictionary could lead to data races or inconsistencies.
+
+#### Example
+
+```swift
+let dictionary = LockedDictionary<Int, String>()
+
+// Add elements
+dictionary[1] = "One"
+dictionary[2] = "Two"
+
+// Access elements
+let value = dictionary[1]  // "One"
+
+dictionary.remove(key: 1)
+let value = dictionary[1]  // nil, since the element was removed
+
 ```
 
 ## License
