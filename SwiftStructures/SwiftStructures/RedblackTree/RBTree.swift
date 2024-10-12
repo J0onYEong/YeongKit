@@ -331,6 +331,32 @@ private extension RBTree {
 }
 
 
+// MARK: Get sorted array
+public extension RBTree {
+    
+    /// if tree is empty, it throws error
+    func getTheBiggestElement() throws -> Element {
+        
+        guard let rootNode else { 
+            throw RBTreeError.emptyTree
+        }
+        
+        let (biggestNode, _) = rootNode.findTheBiggestNodeInSubtree()
+        return biggestNode.value!
+    }
+    
+    /// if tree is empty, it throws error
+    func getTheSmallestElement() throws -> Element {
+        
+        guard let rootNode else {
+            throw RBTreeError.emptyTree
+        }
+        
+        let (smallestNode, _) = rootNode.findTheSmallestNodeInSubtree()
+        return smallestNode.value!
+    }
+}
+
 
 // MARK: for test
 extension RBTree where Element == Int {
