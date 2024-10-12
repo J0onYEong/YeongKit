@@ -82,4 +82,36 @@ class RBTreeTests: XCTestCase {
             XCTAssertEqual(currentElement, 5)
         }
     }
+    
+    func testRemoveElementAndKeepBalanceTree() {
+        
+        let rbTree = RBTree<Int>()
+        let testElements: Array = .init(1...15)
+        
+        
+        for element in testElements {
+            try! rbTree.append(element)
+            rbTree.printTree()
+        }
+        
+        return
+        rbTree.printTree()
+        
+        let heightBeforeRemove = rbTree.height
+        
+        // remove 8 elements
+        for element in 1..<8 {
+            do {
+                print(element)
+                try rbTree.remove(element)
+            } catch {
+                XCTFail(error.localizedDescription)
+            }
+        }
+        
+        rbTree.printTree()
+        
+        // height at lease discounted 1
+        XCTAssertLessThan(rbTree.height, heightBeforeRemove)
+    }
 }

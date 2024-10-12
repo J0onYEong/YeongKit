@@ -80,20 +80,27 @@ public extension RBTree {
         
         // new node is always red
         let newNode: RBTreeNode = .init(value: value, color: .red)
-        var currentParentNode: RBTreeNode! = rootNode
+        
+        // append new node
+        try append(newNode, to: rootNode)
+    }
+    
+    private func append(_ node: Node, to: Node) throws {
+        
+        var currentParentNode: RBTreeNode! = to
         
         while(true) {
             
             if currentParentNode.isEmptyNode {
                 // CurrentNode is empty leaf node
-                currentParentNode.parent?.setToChild(newNode)
+                currentParentNode.parent?.setToChild(node)
                 break
             }
             
-            if currentParentNode > newNode {
+            if currentParentNode > node {
                 // go left
                 currentParentNode = currentParentNode.leftChild
-            } else if currentParentNode < newNode {
+            } else if currentParentNode < node {
                 // go right
                 currentParentNode = currentParentNode.rightChild
             } else {
@@ -102,7 +109,7 @@ public extension RBTree {
         }
         
         // start checking double red
-        resolveDoubleRed(newNode)
+        resolveDoubleRed(node)
     }
 }
 
@@ -151,7 +158,7 @@ public extension RBTree {
     
     private func whenRightOnly(_ node: Node) {
         // 1. find the most Smallest node in right subtree of this node
-        var (smallestNodeInRight, _): (Node, Int) = node.rightChild!.findTheSmallestNodeInSubtree()
+        let (smallestNodeInRight, _): (Node, Int) = node.rightChild!.findTheSmallestNodeInSubtree()
         
         node.changeValue(smallestNodeInRight.value!)
         
@@ -162,13 +169,13 @@ public extension RBTree {
     private func whenTwins(_ node: Node) {
         // 1. find biggest in left and smallest in right
         let (biggestNodeInLeft, leftDepth): (Node, Int) = node.leftChild!.findTheBiggestNodeInSubtree()
-        var (smallestNodeInRight, rightDepth): (Node, Int) = node.rightChild!.findTheSmallestNodeInSubtree()
+        let (smallestNodeInRight, rightDepth): (Node, Int) = node.rightChild!.findTheSmallestNodeInSubtree()
         
         // 2. compare depth of both side and choose bigger one
         let choosenNode = leftDepth > rightDepth ? biggestNodeInLeft : smallestNodeInRight
         
         // 3. removing recursively
-        remove(smallestNodeInRight)
+        remove(choosenNode)
     }
     
     private func findNode(_ value: Element) -> Node? {
@@ -260,11 +267,23 @@ private extension RBTree {
         // set middle node to black
         middleNode.color = .black
         
+        // save middle node's oringinal children
+        let originalLeftNode: Node? = middleNode.leftChild!.isEmptyNode ? nil : middleNode.leftChild!
+        if let originalLeftNode {
+            middleNode.removeChild(originalLeftNode)
+        }
+        let originalRightNode: Node? = middleNode.rightChild!.isEmptyNode ? nil : middleNode.rightChild!
+        if let originalRightNode {
+            middleNode.removeChild(originalRightNode)
+        }
+        
+        // set new children
         sortedList.forEach {
             $0.color = .red
             middleNode.setToChild($0)
         }
         
+        // connect to upper layer
         if let greatGrandNode {
             greatGrandNode.setToChild(middleNode)
         } else {
@@ -272,6 +291,14 @@ private extension RBTree {
             middleNode.parent = nil
             rootNode = middleNode
         }
+        
+        // relocation original children
+        [originalLeftNode, originalRightNode]
+            .compactMap { $0 }
+            .forEach { relocatingNode in
+                // this insertion not related to duplication
+                try! append(relocatingNode, to: middleNode)
+            }
     }
     
     
