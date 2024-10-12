@@ -67,7 +67,10 @@ public extension HashMap {
         }
         lock.lock()
         
-        let keys = keyStore.sortedList(type: .ASC, count: count)
+        let pairCount = dictionary.count
+        let keyCount = count > pairCount ? pairCount : count
+        
+        let keys = keyStore.sortedList(type: .ASC, count: keyCount)
         
         return keys.compactMap { key in
             dictionary[key]
@@ -80,7 +83,10 @@ public extension HashMap {
         }
         lock.lock()
         
-        let keys = keyStore.sortedList(type: .DESC, count: count)
+        let pairCount = dictionary.count
+        let keyCount = count > pairCount ? pairCount : count
+        
+        let keys = keyStore.sortedList(type: .DESC, count: keyCount)
         
         return keys.compactMap { key in
             dictionary[key]

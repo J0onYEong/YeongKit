@@ -66,9 +66,16 @@ class HashMapTests: XCTestCase {
             hashMap[element] = String(element)
         }
         
+        print(hashMap.ascendingValues(100))
+        print(hashMap.descendingValues(100))
         XCTAssertEqual(
-            hashMap.ascendingValues(5),
-            testCase.sorted(by: <)[0..<5].map(String.init)
+            hashMap.ascendingValues(100),
+            testCase.sorted(by: <).map(String.init)
+        )
+        
+        XCTAssertEqual(
+            hashMap.descendingValues(100),
+            testCase.sorted(by: >).map(String.init)
         )
     }
     

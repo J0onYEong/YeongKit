@@ -5,10 +5,10 @@
 # Milestone
 
 - [x] Red-black tree
+- [x] HashMap(powerd by RBTree)
 - [ ] Thread-safe dictionary
     - [x] NSLock
     - [ ] Actor
-- [ ] HashMap(powerd by RBTree)
 
 
 ## Red-black tree
@@ -86,7 +86,7 @@ When recoloring isn’t enough to maintain the Red-Black Tree properties, restru
 
 This operation ensures the balance of the tree while maintaining the Red-Black Tree rules for node colors and structure.
 
-#### Example
+### Example
 
 ```swift
 let tree = RBTree<Int>()
@@ -96,6 +96,42 @@ try tree.append([5, 20, 15, 25])
 
 try tree.remove(5)
 ```
+
+## HashMap
+
+The HashMap performs thread-safe operations during insertion and deletion. The sortedList function returns an array of values based on the sorted key order. When a count parameter is provided, the function limits the number of returned values, optimized to run in **O(log N) + the number of count** operations.
+
+#### Example
+```swift 
+let hashMap = HashMap<Int, String>()
+
+hashMap[1] = "One"
+hashMap[2] = "Two"
+
+hashMap.remove(1)
+hashMap.remove(2)
+```
+
+### sortedList method
+
+The keys in the HashMap are internally managed by a Red-Black Tree. This structure is used to quickly sort the keys stored in the dictionary. The sorted method allows you to retrieve a list of values in ascending or descending order.
+```swift
+let hashMap = HashMap<Int, String>()
+let testCase = (1...10).shuffled()
+
+testCase.forEach { (element) in
+    hashMap[element] = String(element)
+}
+
+// result : ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
+hashMap.ascendingValues(10)
+
+// result : ["10", "9", "8", "7", "6", "5", "4", "3", "2", "1"]
+hashMap.descendingValues(10)
+
+```
+If the count exceeds the number of key-value pairs in the dictionary, it will be set to the total pair count of the dictionary.
+
 
 ## Thread-safe dictionary
 
