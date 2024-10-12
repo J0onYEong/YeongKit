@@ -337,7 +337,7 @@ public extension RBTree {
     /// if tree is empty, it throws error
     func getTheBiggestElement() throws -> Element {
         
-        guard let rootNode else { 
+        guard let rootNode else {
             throw RBTreeError.emptyTree
         }
         
@@ -354,6 +354,71 @@ public extension RBTree {
         
         let (smallestNode, _) = rootNode.findTheSmallestNodeInSubtree()
         return smallestNode.value!
+    }
+}
+
+
+// MARK: Sorted list
+public extension RBTree {
+    
+    enum SortType {
+        case ASC
+        case DESC
+    }
+    
+    
+    /// Return sorted elements arry (O(N logN))
+    func sortedList(type: SortType = .ASC) -> [Element] {
+        
+        guard let rootNode else { return [] }
+        
+        var elements: [Element] = []
+        switch type {
+        case .ASC:
+            LMRTraversal(node: rootNode, elements: &elements)
+        case .DESC:
+            RMLTraversal(node: rootNode, elements: &elements)
+        }
+        
+        return elements
+    }
+    
+    
+    internal func LMRTraversal(node: Node, elements: inout [Element]) {
+        
+        // 1. left
+        if !node.leftChild!.isEmptyNode {
+            
+            LMRTraversal(node: node.leftChild!, elements: &elements)
+        }
+        
+        // 2. middle
+        elements.append(node.value!)
+        
+        
+        // 3. right
+        if !node.rightChild!.isEmptyNode {
+            
+            LMRTraversal(node: node.rightChild!, elements: &elements)
+        }
+    }
+    
+    internal func RMLTraversal(node: Node, elements: inout [Element]) {
+        
+        // 1. right
+        if !node.rightChild!.isEmptyNode {
+            
+            RMLTraversal(node: node.rightChild!, elements: &elements)
+        }
+        
+        // 2. middle
+        elements.append(node.value!)
+        
+        // 3. left
+        if !node.leftChild!.isEmptyNode {
+            
+            RMLTraversal(node: node.leftChild!, elements: &elements)
+        }
     }
 }
 
