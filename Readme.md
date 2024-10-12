@@ -79,7 +79,12 @@ Recoloring is used when both the parent and uncle of a newly inserted node are r
 
 #### Restructuring
 
-When recoloring isn’t enough, restructuring (or rotation) is used to maintain the Red-Black Tree properties. It sorts the new node, parent, and grandparent, makes the middle node the new parent, and assigns the others as its children. This operation ensures the balance of the tree.
+When recoloring isn’t enough to maintain the Red-Black Tree properties, restructuring (or rotation) is used to restore balance. This process involves sorting the new node, parent, and grandparent values, selecting the middle value as the new parent, and assigning the other two nodes as its children.
+
+>  NOTE: if middle node had children already, **children are relocated** in tree restructured. 
+
+
+This operation ensures the balance of the tree while maintaining the Red-Black Tree rules for node colors and structure.
 
 #### Example
 
@@ -88,6 +93,8 @@ let tree = RBTree<Int>()
 
 try tree.append(10)
 try tree.append([5, 20, 15, 25])
+
+try tree.remove(5)
 ```
 
 ## Thread-safe dictionary
