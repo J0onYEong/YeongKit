@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// Thread safe hash map
 public class HashMap<Key, Value> where Key: Hashable & Comparable {
     
     typealias KeyStore = RBTree<Key>
