@@ -114,6 +114,36 @@ public extension RBTree {
 }
 
 
+// MARK: Find node
+extension RBTree {
+    
+    func findNode(_ value: Element) -> Node? {
+        
+        guard let rootNode else { return nil }
+        
+        var currentNode: Node = rootNode
+        
+        while(currentNode.value != value) {
+            
+            if currentNode.value! > value {
+                
+                if currentNode.leftChild!.isEmptyNode {
+                    return nil
+                }
+                currentNode = currentNode.leftChild!
+            } else if currentNode.value! < value {
+                
+                if currentNode.rightChild!.isEmptyNode {
+                    return nil
+                }
+                currentNode = currentNode.rightChild!
+            }
+        }
+        
+        return currentNode
+    }
+}
+
 
 // MARK: Removing elements
 public extension RBTree {
@@ -176,32 +206,6 @@ public extension RBTree {
         
         // 3. removing recursively
         remove(choosenNode)
-    }
-    
-    private func findNode(_ value: Element) -> Node? {
-        
-        guard let rootNode else { return nil }
-        
-        var currentNode: Node = rootNode
-        
-        while(currentNode.value != value) {
-            
-            if currentNode.value! > value {
-                
-                if currentNode.leftChild!.isEmptyNode {
-                    return nil
-                }
-                currentNode = currentNode.leftChild!
-            } else if currentNode.value! < value {
-                
-                if currentNode.rightChild!.isEmptyNode {
-                    return nil
-                }
-                currentNode = currentNode.rightChild!
-            }
-        }
-        
-        return currentNode
     }
 }
 

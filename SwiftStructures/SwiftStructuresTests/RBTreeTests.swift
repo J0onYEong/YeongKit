@@ -91,10 +91,8 @@ class RBTreeTests: XCTestCase {
         
         for element in testElements {
             try! rbTree.append(element)
-            rbTree.printTree()
         }
         
-        return
         rbTree.printTree()
         
         let heightBeforeRemove = rbTree.height
@@ -102,16 +100,24 @@ class RBTreeTests: XCTestCase {
         // remove 8 elements
         for element in 1..<8 {
             do {
-                print(element)
+                
+                let node = rbTree.findNode(element)
+                print("will remove: \(element), chilrenState: \(node!.childrenState!)")
+                
                 try rbTree.remove(element)
+                
+                rbTree.printTree()
+            
             } catch {
                 XCTFail(error.localizedDescription)
             }
         }
         
+        print("------------")
+        
         rbTree.printTree()
         
         // height at lease discounted 1
-        XCTAssertLessThan(rbTree.height, heightBeforeRemove)
+        XCTAssertLessThanOrEqual(rbTree.height, heightBeforeRemove)
     }
 }

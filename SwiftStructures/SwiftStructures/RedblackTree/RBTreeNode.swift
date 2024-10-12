@@ -121,8 +121,8 @@ extension RBTreeNode {
         
         var smallestNode: Node = self
         
-        while(!smallestNode.rightChild!.isEmptyNode) {
-            smallestNode = smallestNode.rightChild!
+        while(!smallestNode.leftChild!.isEmptyNode) {
+            smallestNode = smallestNode.leftChild!
             
             // count up
             depth += 1
