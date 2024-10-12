@@ -140,27 +140,35 @@ public extension RBTree {
     }
     
     private func whenLeftOnly(_ node: Node) {
-        // find the most biggest node in left subtree of this node
-        let biggestNodeInLeft = node.leftChild!.findTheBiggestNodeInSubtree()
+        // 1. find the most biggest node in left subtree of this node
+        let (biggestNodeInLeft, _): (Node, Int) = node.leftChild!.findTheBiggestNodeInSubtree()
         
         node.changeValue(biggestNodeInLeft.value!)
         
-        // removing recursively
+        // 2. removing recursively
         remove(biggestNodeInLeft)
     }
     
     private func whenRightOnly(_ node: Node) {
-        // find the most Smallest node in right subtree of this node
-        var smallestNode: Node = node.rightChild!.findTheSmallestNodeInSubtree()
+        // 1. find the most Smallest node in right subtree of this node
+        var (smallestNodeInRight, _): (Node, Int) = node.rightChild!.findTheSmallestNodeInSubtree()
         
-        node.changeValue(smallestNode.value!)
+        node.changeValue(smallestNodeInRight.value!)
         
-        // removing recursively
-        remove(smallestNode)
+        // 2. removing recursively
+        remove(smallestNodeInRight)
     }
     
     private func whenTwins(_ node: Node) {
+        // 1. find biggest in left and smallest in right
+        let (biggestNodeInLeft, leftDepth): (Node, Int) = node.leftChild!.findTheBiggestNodeInSubtree()
+        var (smallestNodeInRight, rightDepth): (Node, Int) = node.rightChild!.findTheSmallestNodeInSubtree()
         
+        // 2. compare depth of both side and choose bigger one
+        let choosenNode = leftDepth > rightDepth ? biggestNodeInLeft : smallestNodeInRight
+        
+        // 3. removing recursively
+        remove(smallestNodeInRight)
     }
     
     private func findNode(_ value: Element) -> Node? {

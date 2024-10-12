@@ -98,27 +98,37 @@ public class RBTreeNode<Value> where Value: Comparable {
 extension RBTreeNode {
     
     /// Return the biggest node in right subtree except for empty node.
-    func findTheBiggestNodeInSubtree() -> Node {
+    func findTheBiggestNodeInSubtree() -> (Node, Int) {
+        
+        var depth: Int = 0
         
         var biggestNode: Node = self
         
         while(!biggestNode.rightChild!.isEmptyNode) {
             biggestNode = biggestNode.rightChild!
+            
+            // count up
+            depth += 1
         }
         
-        return biggestNode
+        return (biggestNode, depth)
     }
     
     /// Return the smallest node in right subtree except for empty node.
-    func findTheSmallestNodeInSubtree() -> Node {
+    func findTheSmallestNodeInSubtree() -> (Node, Int) {
+        
+        var depth: Int = 0
         
         var smallestNode: Node = self
         
         while(!smallestNode.rightChild!.isEmptyNode) {
             smallestNode = smallestNode.rightChild!
+            
+            // count up
+            depth += 1
         }
         
-        return smallestNode
+        return (smallestNode, depth)
     }
 }
 
