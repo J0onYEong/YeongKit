@@ -71,4 +71,54 @@ class HashMapTests: XCTestCase {
             testCase.sorted(by: <)[0..<5].map(String.init)
         )
     }
+    
+    func testMultithreadedInsertionAndRetrieval() async {
+        // Given
+        let hashMap = HashMap<Int, String>()
+        let expectation = XCTestExpectation(description: "Multiple threads insert and retrieve values in HashMap")
+        expectation.expectedFulfillmentCount = 100  // Expect 100 threads to finish
+        
+        // When
+        await withTaskGroup(of: Void.self) { group in
+            for index in 0..<100 {
+                group.addTask {
+                    let testValue = "Value \(index)"
+                    hashMap[index] = testValue  // Insert value
+                    let value = hashMap[index]  // Retrieve value
+                    XCTAssertEqual(value, testValue, "Value mismatch in thread \(index)")
+                    expectation.fulfill()  // Thread finished
+                }
+            }
+        }
+        
+        // Then
+        await fulfillment(of: [expectation], timeout: 10.0)
+    }
+    
+    func testMultithreadedRemoval() async {
+        // Given
+        let hashMap = HashMap<Int, String>()
+        let expectation = XCTestExpectation(description: "Multiple threads remove values in HashMap")
+        expectation.expectedFulfillmentCount = 100  // Expect 100 threads to finish
+        
+        // Insert initial values
+        for index in 0..<100 {
+            hashMap[index] = "Value \(index)"
+        }
+        
+        // When
+        await withTaskGroup(of: Void.self) { group in
+            for index in 0..<100 {
+                group.addTask {
+                    hashMap.remove(index)  // Remove value
+                    let value = hashMap[index]  // Attempt to retrieve the removed value
+                    XCTAssertNil(value, "Value for key \(index) should be nil after removal")
+                    expectation.fulfill()  // Thread finished
+                }
+            }
+        }
+        
+        // Then
+        await fulfillment(of: [expectation], timeout: 10.0)
+    }
 }
