@@ -56,4 +56,19 @@ class HashMapTests: XCTestCase {
         // Then
         XCTAssertEqual(hashMap[1], "Updated One", "Value for key 1 should be updated to 'Updated One'")
     }
+    
+    func testASCAndDESCList() {
+        
+        let hashMap = HashMap<Int, String>()
+        let testCase = (1...10).shuffled()
+
+        testCase.forEach { (element) in
+            hashMap[element] = String(element)
+        }
+        
+        XCTAssertEqual(
+            hashMap.ascendingValues(5),
+            testCase.sorted(by: <)[0..<5].map(String.init)
+        )
+    }
 }

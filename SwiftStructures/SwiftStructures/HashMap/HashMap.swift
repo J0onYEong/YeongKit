@@ -55,3 +55,38 @@ public class HashMap<Key, Value> where Key: Hashable & Comparable {
         dictionary.removeValue(forKey: key)
     }
 }
+
+
+// MARK: sorted value list
+public extension HashMap {
+    
+    func ascendingValues(_ count: Int) -> [Value] {
+        defer {
+            lock.unlock()
+        }
+        lock.lock()
+        
+        let keys = keyStore.sortedList(type: .ASC)
+        let maxCount = count > dictionary.count ? dictionary.count : count
+        let slicedKeys = keys[0..<maxCount]
+        
+        return slicedKeys.compactMap { key in
+            dictionary[key]
+        }
+    }
+    
+    func descendingValues(_ count: Int) -> [Value] {
+        defer {
+            lock.unlock()
+        }
+        lock.lock()
+        
+        let keys = keyStore.sortedList(type: .DESC)
+        let maxCount = count > dictionary.count ? dictionary.count : count
+        let slicedKeys = keys[0..<maxCount]
+        
+        return slicedKeys.compactMap { key in
+            dictionary[key]
+        }
+    }
+}

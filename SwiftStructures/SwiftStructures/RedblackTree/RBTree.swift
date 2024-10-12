@@ -367,7 +367,7 @@ public extension RBTree {
     }
     
     
-    /// Return sorted elements arry (O(N logN))
+    /// Return sorted elements array (O(N))
     func sortedList(type: SortType = .ASC) -> [Element] {
         
         guard let rootNode else { return [] }
