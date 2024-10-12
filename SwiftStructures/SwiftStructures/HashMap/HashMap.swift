@@ -67,11 +67,9 @@ public extension HashMap {
         }
         lock.lock()
         
-        let keys = keyStore.sortedList(type: .ASC)
-        let maxCount = count > dictionary.count ? dictionary.count : count
-        let slicedKeys = keys[0..<maxCount]
+        let keys = keyStore.sortedList(type: .ASC, count: count)
         
-        return slicedKeys.compactMap { key in
+        return keys.compactMap { key in
             dictionary[key]
         }
     }
@@ -82,11 +80,9 @@ public extension HashMap {
         }
         lock.lock()
         
-        let keys = keyStore.sortedList(type: .DESC)
-        let maxCount = count > dictionary.count ? dictionary.count : count
-        let slicedKeys = keys[0..<maxCount]
+        let keys = keyStore.sortedList(type: .DESC, count: count)
         
-        return slicedKeys.compactMap { key in
+        return keys.compactMap { key in
             dictionary[key]
         }
     }
