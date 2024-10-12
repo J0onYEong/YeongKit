@@ -17,7 +17,7 @@ public class RBTreeNode<Value> where Value: Comparable {
     }
     
     // Node information
-    public let value: Value?
+    public private(set) var value: Value?
     var color: NodeColor
     var isEmptyNode: Bool { value == nil }
     
@@ -39,6 +39,7 @@ public class RBTreeNode<Value> where Value: Comparable {
         }
     }
     
+    
     /// Set a node to child
     func setToChild(_ node: Node) {
         
@@ -54,6 +55,7 @@ public class RBTreeNode<Value> where Value: Comparable {
         }
     }
     
+    
     /// Find sibiling node
     func getSibilingNode(_ node: Node) -> Node {
         
@@ -68,6 +70,8 @@ public class RBTreeNode<Value> where Value: Comparable {
         }
     }
     
+    
+    /// Release node from this node's child and set parent node to nil
     func removeChild(_ node: Node) {
         if leftChild === node {
             leftChild = makeEmptyLeafNode()
@@ -81,9 +85,45 @@ public class RBTreeNode<Value> where Value: Comparable {
             fatalError("\(#function) this isn't child of current node")
         }
     }
+    
+    
+    /// change value for replacing
+    func changeValue(_ value: Value) {
+        self.value = value
+    }
 }
 
 
+// MARK: About subtree
+extension RBTreeNode {
+    
+    /// Return the biggest node in right subtree except for empty node.
+    func findTheBiggestNodeInSubtree() -> Node {
+        
+        var biggestNode: Node = self
+        
+        while(!biggestNode.rightChild!.isEmptyNode) {
+            biggestNode = biggestNode.rightChild!
+        }
+        
+        return biggestNode
+    }
+    
+    /// Return the smallest node in right subtree except for empty node.
+    func findTheSmallestNodeInSubtree() -> Node {
+        
+        var smallestNode: Node = self
+        
+        while(!smallestNode.rightChild!.isEmptyNode) {
+            smallestNode = smallestNode.rightChild!
+        }
+        
+        return smallestNode
+    }
+}
+
+
+// MARK: Empty leaf node
 private extension RBTreeNode {
     
     /// A basic leaf node with no value and a default black color.
@@ -94,6 +134,8 @@ private extension RBTreeNode {
     }
 }
 
+
+// MARK: Comparable
 extension RBTreeNode: Comparable {
     
     public static func == (lhs: RBTreeNode<Value>, rhs: RBTreeNode<Value>) -> Bool {
@@ -104,6 +146,7 @@ extension RBTreeNode: Comparable {
         lhs.value! < rhs.value!
     }
 }
+
 
 // MARK: Children state
 extension RBTreeNode {

@@ -117,6 +117,49 @@ public extension RBTree {
             throw RBTreeError.cantFindElementInTree
         }
         
+        remove(node)
+    }
+    
+    private func remove(_ node: Node) {
+        
+        switch node.childrenState! {
+        case .noChildren:
+            whenNoChild(node)
+        case .leftOnly:
+            whenLeftOnly(node)
+        case .rightOnly:
+            whenRightOnly(node)
+        case .twins:
+            whenTwins(node)
+        }
+    }
+    
+    private func whenNoChild(_ node: Node) {
+        // remove only this node
+        node.parent?.removeChild(node)
+    }
+    
+    private func whenLeftOnly(_ node: Node) {
+        // find the most biggest node in left subtree of this node
+        let biggestNodeInLeft = node.leftChild!.findTheBiggestNodeInSubtree()
+        
+        node.changeValue(biggestNodeInLeft.value!)
+        
+        // removing recursively
+        remove(biggestNodeInLeft)
+    }
+    
+    private func whenRightOnly(_ node: Node) {
+        // find the most Smallest node in right subtree of this node
+        var smallestNode: Node = node.rightChild!.findTheSmallestNodeInSubtree()
+        
+        node.changeValue(smallestNode.value!)
+        
+        // removing recursively
+        remove(smallestNode)
+    }
+    
+    private func whenTwins(_ node: Node) {
         
     }
     
