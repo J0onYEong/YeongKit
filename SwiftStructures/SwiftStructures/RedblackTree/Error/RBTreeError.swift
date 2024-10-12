@@ -7,6 +7,12 @@
 
 import Foundation
 
-public enum RBTreeError: String, Error {
-    case duplicatedElement="BST node's values should be unique"
+public enum RBTreeError: String, Error, LocalizedError {
+    case emptyTree = "Tree is empty"
+    case duplicatedElement = "BST node's values should be unique"
+    case cantFindElementInTree = "Element not found in tree"
+    
+    public var errorDescription: String? {
+        return self.rawValue
+    }
 }

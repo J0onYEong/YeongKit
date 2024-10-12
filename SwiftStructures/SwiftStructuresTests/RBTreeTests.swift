@@ -30,9 +30,10 @@ class RBTreeTests: XCTestCase {
                 } catch {
                     XCTFail(error.localizedDescription)
                 }
-                
-                rbTree.printTree()
             }
+            
+            rbTree.printTree()
+            
             XCTAssertTrue((expactedTreeHeightRange).contains(rbTree.height))
             print("------------")
         }
@@ -80,5 +81,43 @@ class RBTreeTests: XCTestCase {
         } catch {
             XCTAssertEqual(currentElement, 5)
         }
+    }
+    
+    func testRemoveElementAndKeepBalanceTree() {
+        
+        let rbTree = RBTree<Int>()
+        let testElements: Array = .init(1...15)
+        
+        
+        for element in testElements {
+            try! rbTree.append(element)
+        }
+        
+        rbTree.printTree()
+        
+        let heightBeforeRemove = rbTree.height
+        
+        // remove 8 elements
+        for element in 1..<8 {
+            do {
+                
+                let node = rbTree.findNode(element)
+                print("will remove: \(element), chilrenState: \(node!.childrenState!)")
+                
+                try rbTree.remove(element)
+                
+                rbTree.printTree()
+            
+            } catch {
+                XCTFail(error.localizedDescription)
+            }
+        }
+        
+        print("------------")
+        
+        rbTree.printTree()
+        
+        // height at lease discounted 1
+        XCTAssertLessThanOrEqual(rbTree.height, heightBeforeRemove)
     }
 }

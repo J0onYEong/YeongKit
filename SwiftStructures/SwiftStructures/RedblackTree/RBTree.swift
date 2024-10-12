@@ -23,11 +23,7 @@ public class RBTree<Element> where Element: Comparable {
         }
     }
     
-    private func createRoot(_ value: Element) {
-        // Root node is always black
-        self.rootNode = .init(value: value, color: .black)
-    }
-    
+    /// height is starting from 1
     var height: Int {
         
         guard let rootNode else { return 0 }
@@ -56,9 +52,17 @@ public class RBTree<Element> where Element: Comparable {
         return currentHeight
     }
     
+    private func createRoot(_ value: Element) {
+        // Root node is always black
+        self.rootNode = .init(value: value, color: .black)
+    }
+}
+
+// MARK: Appending element
+public extension RBTree {
     
     /// Append elements to tree
-    public func append(_ values: [Element]) throws {
+    func append(_ values: [Element]) throws {
         for value in values {
             try append(value)
         }
@@ -66,7 +70,7 @@ public class RBTree<Element> where Element: Comparable {
     
     
     /// Append element to tree
-    public func append(_ value: Element) throws {
+    func append(_ value: Element) throws {
         
         guard let rootNode else {
             // Root node is empty
@@ -76,20 +80,27 @@ public class RBTree<Element> where Element: Comparable {
         
         // new node is always red
         let newNode: RBTreeNode = .init(value: value, color: .red)
-        var currentParentNode: RBTreeNode! = rootNode
+        
+        // append new node
+        try append(newNode, to: rootNode)
+    }
+    
+    private func append(_ node: Node, to: Node) throws {
+        
+        var currentParentNode: RBTreeNode! = to
         
         while(true) {
             
             if currentParentNode.isEmptyNode {
                 // CurrentNode is empty leaf node
-                currentParentNode.parent?.setToChild(newNode)
+                currentParentNode.parent?.setToChild(node)
                 break
             }
             
-            if currentParentNode > newNode {
+            if currentParentNode > node {
                 // go left
                 currentParentNode = currentParentNode.leftChild
-            } else if currentParentNode < newNode {
+            } else if currentParentNode < node {
                 // go right
                 currentParentNode = currentParentNode.rightChild
             } else {
@@ -98,10 +109,112 @@ public class RBTree<Element> where Element: Comparable {
         }
         
         // start checking double red
-        resolveDoubleRed(newNode)
+        resolveDoubleRed(node)
+    }
+}
+
+
+// MARK: Find node
+extension RBTree {
+    
+    func findNode(_ value: Element) -> Node? {
+        
+        guard let rootNode else { return nil }
+        
+        var currentNode: Node = rootNode
+        
+        while(currentNode.value != value) {
+            
+            if currentNode.value! > value {
+                
+                if currentNode.leftChild!.isEmptyNode {
+                    return nil
+                }
+                currentNode = currentNode.leftChild!
+            } else if currentNode.value! < value {
+                
+                if currentNode.rightChild!.isEmptyNode {
+                    return nil
+                }
+                currentNode = currentNode.rightChild!
+            }
+        }
+        
+        return currentNode
+    }
+}
+
+
+// MARK: Removing elements
+public extension RBTree {
+    
+    func remove(_ value: Element) throws {
+        
+        guard let node = findNode(value) else {
+            throw RBTreeError.cantFindElementInTree
+        }
+        
+        remove(node)
     }
     
-    private func resolveDoubleRed(_ newNode: Node) {
+    private func remove(_ node: Node) {
+        
+        switch node.childrenState! {
+        case .noChildren:
+            whenNoChild(node)
+        case .leftOnly:
+            whenLeftOnly(node)
+        case .rightOnly:
+            whenRightOnly(node)
+        case .twins:
+            whenTwins(node)
+        }
+    }
+    
+    private func whenNoChild(_ node: Node) {
+        // remove only this node
+        node.parent?.removeChild(node)
+    }
+    
+    private func whenLeftOnly(_ node: Node) {
+        // 1. find the most biggest node in left subtree of this node
+        let (biggestNodeInLeft, _): (Node, Int) = node.leftChild!.findTheBiggestNodeInSubtree()
+        
+        node.changeValue(biggestNodeInLeft.value!)
+        
+        // 2. removing recursively
+        remove(biggestNodeInLeft)
+    }
+    
+    private func whenRightOnly(_ node: Node) {
+        // 1. find the most Smallest node in right subtree of this node
+        let (smallestNodeInRight, _): (Node, Int) = node.rightChild!.findTheSmallestNodeInSubtree()
+        
+        node.changeValue(smallestNodeInRight.value!)
+        
+        // 2. removing recursively
+        remove(smallestNodeInRight)
+    }
+    
+    private func whenTwins(_ node: Node) {
+        // 1. find biggest in left and smallest in right
+        let (biggestNodeInLeft, leftDepth): (Node, Int) = node.leftChild!.findTheBiggestNodeInSubtree()
+        let (smallestNodeInRight, rightDepth): (Node, Int) = node.rightChild!.findTheSmallestNodeInSubtree()
+        
+        // 2. compare depth of both side and choose bigger one
+        let choosenNode = leftDepth > rightDepth ? biggestNodeInLeft : smallestNodeInRight
+        
+        // 3. removing recursively
+        remove(choosenNode)
+    }
+}
+
+
+
+// MARK: Resolving dobule red
+private extension RBTree {
+    
+    func resolveDoubleRed(_ newNode: Node) {
         
         // check double red
         let parentNode = newNode.parent!
@@ -140,7 +253,7 @@ public class RBTree<Element> where Element: Comparable {
     /// 1. sort newNode, parentNode, grandNode
     /// 2. make middle node to parent and the others its children.
     /// 3. make middle node to black and the others to red
-    private func restructuring(newNode: Node, parentNode: Node, grandNode: Node, uncleNode: Node) {
+    func restructuring(newNode: Node, parentNode: Node, grandNode: Node, uncleNode: Node) {
         
         // great grand node
         let greatGrandNode: Node? = grandNode === rootNode ? nil : grandNode.parent
@@ -151,15 +264,30 @@ public class RBTree<Element> where Element: Comparable {
         }
         grandNode.removeChild(parentNode)
         parentNode.removeChild(newNode)
-        
+    
         var sortedList = [newNode, parentNode, grandNode].sorted()
         let middleNode = sortedList.remove(at: 1)
+        
+        // set middle node to black
         middleNode.color = .black
+        
+        // save middle node's oringinal children
+        let originalLeftNode: Node? = middleNode.leftChild!.isEmptyNode ? nil : middleNode.leftChild!
+        if let originalLeftNode {
+            middleNode.removeChild(originalLeftNode)
+        }
+        let originalRightNode: Node? = middleNode.rightChild!.isEmptyNode ? nil : middleNode.rightChild!
+        if let originalRightNode {
+            middleNode.removeChild(originalRightNode)
+        }
+        
+        // set new children
         sortedList.forEach {
             $0.color = .red
             middleNode.setToChild($0)
         }
         
+        // connect to upper layer
         if let greatGrandNode {
             greatGrandNode.setToChild(middleNode)
         } else {
@@ -167,6 +295,14 @@ public class RBTree<Element> where Element: Comparable {
             middleNode.parent = nil
             rootNode = middleNode
         }
+        
+        // relocation original children
+        [originalLeftNode, originalRightNode]
+            .compactMap { $0 }
+            .forEach { relocatingNode in
+                // this insertion not related to duplication
+                try! append(relocatingNode, to: middleNode)
+            }
     }
     
     
@@ -174,7 +310,7 @@ public class RBTree<Element> where Element: Comparable {
     /// 1. make parent and uncle to black
     /// 2. make grandNode to red
     /// 3. if grandNode is root, make it black
-    private func recoloring(newNode: Node, parentNode: Node, grandNode: Node, uncleNode: Node) {
+    func recoloring(newNode: Node, parentNode: Node, grandNode: Node, uncleNode: Node) {
         
         // make parent and uncle to black
         parentNode.color = .black
@@ -193,6 +329,34 @@ public class RBTree<Element> where Element: Comparable {
         }
     }
 }
+
+
+// MARK: Get sorted array
+public extension RBTree {
+    
+    /// if tree is empty, it throws error
+    func getTheBiggestElement() throws -> Element {
+        
+        guard let rootNode else { 
+            throw RBTreeError.emptyTree
+        }
+        
+        let (biggestNode, _) = rootNode.findTheBiggestNodeInSubtree()
+        return biggestNode.value!
+    }
+    
+    /// if tree is empty, it throws error
+    func getTheSmallestElement() throws -> Element {
+        
+        guard let rootNode else {
+            throw RBTreeError.emptyTree
+        }
+        
+        let (smallestNode, _) = rootNode.findTheSmallestNodeInSubtree()
+        return smallestNode.value!
+    }
+}
+
 
 // MARK: for test
 extension RBTree where Element == Int {
