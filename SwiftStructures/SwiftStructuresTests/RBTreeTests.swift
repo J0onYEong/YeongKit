@@ -120,4 +120,44 @@ class RBTreeTests: XCTestCase {
         // height at lease discounted 1
         XCTAssertLessThanOrEqual(rbTree.height, heightBeforeRemove)
     }
+    
+    func testSortedList() {
+        
+        let rbTree = RBTree<Int>()
+        let testCase = [
+            48, 18, 47, 62, 66, 15, 28, 33, 94, 49, 3, 76, 37, 38, 40, 68, 78, 11, 92, 36,
+            69, 4, 95, 53, 23, 12, 81, 88, 44, 32, 46, 91, 14, 74, 80, 86, 22, 25, 39, 1
+        ]
+        try! rbTree.append(testCase)
+        
+        rbTree.printTree()
+        
+        let ascendingList = rbTree.sortedList(type: .ASC)
+        
+        XCTAssertEqual(testCase.sorted(by: <), ascendingList)
+        
+        let descendingList = rbTree.sortedList(type: .DESC)
+        
+        XCTAssertEqual(testCase.sorted(by: >), descendingList)
+    }
+    
+    func testSortedListWithCount() {
+        
+        let rbTree = RBTree<Int>()
+        let testCase = [
+            48, 18, 47, 62, 66, 15, 28, 33, 94, 49, 3, 76, 37, 38, 40, 68, 78, 11, 92, 36,
+            69, 4, 95, 53, 23, 12, 81, 88, 44, 32, 46, 91, 14, 74, 80, 86, 22, 25, 39, 1
+        ]
+        try! rbTree.append(testCase)
+        
+        rbTree.printTree()
+        
+        let ascendingList = rbTree.sortedList(type: .ASC, count: 10)
+        let expactedResult1 = Array(testCase.sorted(by: <)[0..<10])
+        XCTAssertEqual(expactedResult1, ascendingList)
+        
+        let descendingList = rbTree.sortedList(type: .DESC, count: 10)
+        let expactedResult2 = Array(testCase.sorted(by: >)[0..<10])
+        XCTAssertEqual(expactedResult2, descendingList)
+    }
 }

@@ -337,7 +337,7 @@ public extension RBTree {
     /// if tree is empty, it throws error
     func getTheBiggestElement() throws -> Element {
         
-        guard let rootNode else { 
+        guard let rootNode else {
             throw RBTreeError.emptyTree
         }
         
@@ -354,6 +354,236 @@ public extension RBTree {
         
         let (smallestNode, _) = rootNode.findTheSmallestNodeInSubtree()
         return smallestNode.value!
+    }
+}
+
+
+// MARK: Sorted list
+public extension RBTree {
+    
+    enum SortType {
+        case ASC
+        case DESC
+    }
+    
+    
+    /// Return sorted elements array (O(N))
+    func sortedList(type: SortType = .ASC) -> [Element] {
+        
+        guard let rootNode else { return [] }
+        
+        var elements: [Element] = []
+        switch type {
+        case .ASC:
+            LMRTraversal(node: rootNode, elements: &elements)
+        case .DESC:
+            RMLTraversal(node: rootNode, elements: &elements)
+        }
+        
+        return elements
+    }
+    
+    
+    internal func LMRTraversal(node: Node, elements: inout [Element]) {
+        
+        // 1. left
+        if !node.leftChild!.isEmptyNode {
+            
+            LMRTraversal(node: node.leftChild!, elements: &elements)
+        }
+        
+        // 2. middle
+        elements.append(node.value!)
+        
+        
+        // 3. right
+        if !node.rightChild!.isEmptyNode {
+            
+            LMRTraversal(node: node.rightChild!, elements: &elements)
+        }
+    }
+    
+    internal func RMLTraversal(node: Node, elements: inout [Element]) {
+        
+        // 1. right
+        if !node.rightChild!.isEmptyNode {
+            
+            RMLTraversal(node: node.rightChild!, elements: &elements)
+        }
+        
+        // 2. middle
+        elements.append(node.value!)
+        
+        // 3. left
+        if !node.leftChild!.isEmptyNode {
+            
+            RMLTraversal(node: node.leftChild!, elements: &elements)
+        }
+    }
+    
+    // MARK: count limit traversal
+    
+    /// returns elements list in O(N) but, it is proportional to count
+    func sortedList(type: SortType = .ASC, count: Int) -> [Element] {
+        
+        guard let rootNode else { return [] }
+        
+        var elements: [Element] = []
+        var elementCount = 0
+        switch type {
+        case .ASC:
+            let (smallestNode, _) = rootNode.findTheSmallestNodeInSubtree()
+            
+            reverseLMRTraversalWithCount(
+                node: smallestNode,
+                elements: &elements,
+                currentCount: &elementCount,
+                maxCount: count
+            )
+        case .DESC:
+            let (biggestNode, _) = rootNode.findTheBiggestNodeInSubtree()
+            reverseRMLTraversalWithCount(
+                node: biggestNode,
+                elements: &elements,
+                currentCount: &elementCount,
+                maxCount: count
+            )
+        }
+        
+        return elements
+    }
+    
+    internal func LMRTraversalWithCount(node: Node, elements: inout [Element], currentCount: inout Int, maxCount: Int) {
+        
+        // 1. left
+        if !node.leftChild!.isEmptyNode {
+            
+            LMRTraversalWithCount(
+                node: node.leftChild!,
+                elements: &elements,
+                currentCount: &currentCount,
+                maxCount: maxCount
+            )
+        }
+        
+        // 2. middle
+        if currentCount < maxCount {
+            elements.append(node.value!)
+            currentCount+=1
+        } else {
+            return
+        }
+        
+        
+        // 3. right
+        if !node.rightChild!.isEmptyNode {
+            
+            LMRTraversalWithCount(
+                node: node.rightChild!,
+                elements: &elements,
+                currentCount: &currentCount,
+                maxCount: maxCount
+            )
+        }
+    }
+    
+    internal func RMLTraversalWithCount(node: Node, elements: inout [Element], currentCount: inout Int, maxCount: Int) {
+        
+        // 1. right
+        if !node.rightChild!.isEmptyNode {
+            
+            RMLTraversalWithCount(
+                node: node.rightChild!,
+                elements: &elements,
+                currentCount: &currentCount,
+                maxCount: maxCount
+            )
+        }
+        
+        // 2. middle
+        if currentCount < maxCount {
+            elements.append(node.value!)
+            currentCount+=1
+        } else {
+            return
+        }
+        
+        // 3. left
+        if !node.leftChild!.isEmptyNode {
+            
+            RMLTraversalWithCount(
+                node: node.leftChild!,
+                elements: &elements,
+                currentCount: &currentCount,
+                maxCount: maxCount
+            )
+        }
+    }
+    
+    /// this method starts from smallest node
+    internal func reverseLMRTraversalWithCount(node: Node, elements: inout [Element], currentCount: inout Int, maxCount: Int) {
+        
+        // 1. middle
+        if currentCount < maxCount {
+            elements.append(node.value!)
+            currentCount+=1
+        } else {
+            return
+        }
+        
+        // 2. Right
+        if !node.rightChild!.isEmptyNode {
+            
+            LMRTraversalWithCount(
+                node: node.rightChild!,
+                elements: &elements,
+                currentCount: &currentCount,
+                maxCount: maxCount
+            )
+        }
+        
+        // 3. parent
+        guard let parentNode = node.parent else { return }
+        
+        reverseLMRTraversalWithCount(
+            node: parentNode,
+            elements: &elements,
+            currentCount: &currentCount,
+            maxCount: maxCount
+        )
+    }
+    
+    /// this method starts from biggest node
+    internal func reverseRMLTraversalWithCount(node: Node, elements: inout [Element], currentCount: inout Int, maxCount: Int) {
+        
+        // 1. middle
+        if currentCount < maxCount {
+            elements.append(node.value!)
+            currentCount+=1
+        } else {
+            return
+        }
+        
+        // 2. left
+        if !node.leftChild!.isEmptyNode {
+            
+            RMLTraversalWithCount(
+                node: node.leftChild!,
+                elements: &elements,
+                currentCount: &currentCount,
+                maxCount: maxCount
+            )
+        }
+        
+        // 3. parent
+        guard let parentNode = node.parent else { return }
+        
+        reverseRMLTraversalWithCount(
+            node: parentNode,
+            elements: &elements,
+            currentCount: &currentCount,
+            maxCount: maxCount
+        )
     }
 }
 
