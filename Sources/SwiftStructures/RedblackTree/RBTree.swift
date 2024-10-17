@@ -12,7 +12,7 @@ import Foundation
 /// - All values in the tree must be unique. Attempting to insert a duplicate value will result in an error.
 public class RBTree<Element> where Element: Comparable {
     
-    typealias Node = RBTreeNode<Element>
+    public typealias Node = RBTreeNode<Element>
     
     private(set) var rootNode: Node?
     
@@ -115,7 +115,7 @@ public extension RBTree {
 
 
 // MARK: Find node
-extension RBTree {
+public extension RBTree {
     
     func findNode(_ value: Element) -> Node? {
         
@@ -591,8 +591,15 @@ public extension RBTree {
 // MARK: for test
 extension RBTree where Element == Int {
     
-    
-    func printTree() {
+    /**
+     You can print your tree.
+     Printed node consists of 3 components:
+     
+     - `color`: 🟥 or ⬛️
+     - `p`: parent node's value
+     - `v`: node's value
+    */
+    public func printTree() {
         
         var printLayer: [Int: [RBTreeNode<Int>]] = [0: [rootNode!]]
         

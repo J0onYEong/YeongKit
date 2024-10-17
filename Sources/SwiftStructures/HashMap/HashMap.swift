@@ -17,6 +17,8 @@ public class HashMap<Key, Value> where Key: Hashable & Comparable {
     
     private let lock: NSLock = .init()
     
+    public init() { }
+    
     public subscript(key: Key) -> Value? {
         get {
             defer {
