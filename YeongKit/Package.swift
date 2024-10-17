@@ -21,7 +21,9 @@ let package = Package(
         .target(name: "SwiftStructures"),
         
         .testTarget(
-            name: "YeongKitTests",
-            dependencies: ["SwiftStructures"]),
+            name: "SwiftStructuresTests",
+            dependencies: [
+                "SwiftStructures"
+            ]),
     ]
 )
